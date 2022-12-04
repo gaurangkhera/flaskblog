@@ -84,7 +84,7 @@ def comment(title):
         blog = Blog.query.filter_by(title=title).first()
         if Blog:
             comment = Comment(
-                text=text, author=current_user.id, blog=blog.id)
+                text=text, author=current_user.username, blog=blog.id)
             db.session.add(comment)
             db.session.commit()
         else:
