@@ -49,6 +49,29 @@ def delete_blog(title):
     else:
         db.session.delete(blog)
         db.session.commit()
-        flash('Post deleted successfully.', category='success')
+        flash('Blog deleted successfully.', category='success')
 
     return redirect(url_for('views.viewblogs'))
+
+@views.route('/blogs/update/<title>', methods=['GET', 'POST'])
+@login_required
+def edit_blog(title):
+    blog = Blog.query.filter_by(title=title).first()
+    if request.method == "POST":
+        new_title = request.form.get('new_title')
+        new_content = request.form.get('new_content')
+        if not blog:
+            flash("Cannot find blog.", category='error')
+        elif current_user.username != blog.author:
+            flash("You do not have permission to edit this blog.", category='error') 
+        else:  
+            blog.title = new_title
+            blog.content = new_content
+            db.session.add(blog)
+            db.session.commit()
+            flash('Blog updated successfully.', category='success')
+
+    return render_template('edit.html', blog=blog)
+
+
+
