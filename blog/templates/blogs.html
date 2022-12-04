@@ -23,7 +23,7 @@
           <a href="/blogs/comment/{{blog.title}}" class="btn btn-primary">Comment</a>
         </div>
       </div>
-      <p class="card-text">
+      <p class="card-text text-light bg-dark">
         {% if blog.cmnts|length > 0 %}
         {% for comment in blog.cmnts %}
           {{comment.text}} - {{comment.author}}<br>
