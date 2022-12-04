@@ -21,8 +21,6 @@ def create_app():
 
     from .models import User
 
-    create_database(app)
-
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)
@@ -31,9 +29,8 @@ def create_app():
     def load_user(id):
         return User.query.get(int(id))
 
+    with app.app_context():
+        db.create_all()
+
     return app
 
-def create_database(app):
-    if not path.exists("website/" + DB_NAME):
-        db.create_all(app=app)
-        print("Created database!")
