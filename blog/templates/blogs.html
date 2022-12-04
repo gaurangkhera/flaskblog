@@ -25,7 +25,9 @@
       </div>
       <p class="card-text">
         {% if blog.cmnts|length > 0 %}
-        {{blog.cmnts}}
+        {% for comment in blog.cmnts %}
+          {{comment.text}} - {{comment.author}}<br>
+        {% endfor %}
         {% else %}
         <small class="text-muted">No Comments</small>
         {% endif %}
