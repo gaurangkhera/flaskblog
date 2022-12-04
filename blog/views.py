@@ -51,4 +51,4 @@ def delete_blog(title):
         db.session.commit()
         flash('Post deleted successfully.', category='success')
 
-    return redirect(url_for('views.home'))
+    return redirect(url_for('views.viewblogs'))
