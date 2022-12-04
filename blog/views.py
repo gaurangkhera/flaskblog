@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from .models import Blog
+from .models import Blog, Comment
 from . import db
 
 
@@ -73,5 +73,23 @@ def edit_blog(title):
 
     return render_template('edit.html', blog=blog)
 
+@views.route('/blogs/comment/<title>', methods=['GET', 'POST'])
+@login_required
+def comment(title):
+    text = request.form.get('text')
+
+    if not text:
+        flash('Comment cannot be empty.', category='error')
+    else:
+        blog = Blog.query.filter_by(title=title).first()
+        if Blog:
+            comment = Comment(
+                text=text, author=current_user.id, blog=blog.id)
+            db.session.add(comment)
+            db.session.commit()
+        else:
+            flash('Blog does not exist.', category='error')
+
+    return redirect(url_for('views.viewblogs'))
 
 

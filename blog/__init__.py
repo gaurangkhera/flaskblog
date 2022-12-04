@@ -19,7 +19,7 @@ def create_app():
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
-    from .models import User
+    from .models import User, Blog, Comment
 
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
