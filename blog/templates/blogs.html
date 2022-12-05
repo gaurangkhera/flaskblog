@@ -20,30 +20,36 @@
           <br>  
           <a href="/blogs/delete/{{blog.title}}" class="btn btn-primary">Delete</a>
           <a href="/blogs/update/{{blog.title}}" class="btn btn-primary">Edit</a>
+          <br><br>
         </div>
-      </div>
-      <p class="card-text text-light bg-dark">
+        <h6>Comments - </h6>
+        <p class="card-text text-light bg-dark">
         {% if blog.cmnts|length > 0 %}
-        {% for comment in blog.cmnts %}
-          {{comment.text}} - {{comment.author}}<br>
-        {% endfor %}
+          {% for cmnt in blog.cmnts %}
+          {% if blog.author == current_user.username %}
+          {{cmnt.text}} - {{cmnt.author}}&nbsp;&nbsp;<a href="/blogs/deletecmnt/{{cmnt.text}}" class="btn btn-primary">Delete comment</a><br><br>
+          {% else %}
+          {{cmnt.text}} - {{cmnt.author}}<br>
+          {% endif %}
+          {% endfor %}
         {% else %}
-        <small class="text-muted">No Comments</small>
+          <p>There are no comments on this blog.</p>
         {% endif %}
-      </p>
-      <form
-        class="input-group mb-3"
-        method="post"
-        action="/blogs/comment/{{blog.title}}"
-      >
-        <input
-          type="text"
-          id="text"
-          name="text"
-          class="form-control"
-          placeholder="Comment something!"
-        />
-        <button type="submit" class="btn btn-primary">Comment</button>
-      </form>
-    {% endfor %}
+        </p>
+        <form
+          class="input-group mb-3"
+          method="post"
+          action="/blogs/comment/{{blog.title}}"
+        >
+          <input
+            type="text"
+            id="text"
+            name="text"
+            class="form-control"
+            placeholder="Comment something!"
+          />
+          <button type="submit" class="btn btn-primary">Comment</button>
+        </form>
+      {% endfor %}
+      </div>
 {% endblock content %}

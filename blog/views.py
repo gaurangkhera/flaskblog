@@ -92,4 +92,20 @@ def comment(title):
 
     return redirect(url_for('views.viewblogs'))
 
+@views.route('/blogs/deletecmnt/<text>', methods=['GET', 'POST'])
+def delete_cmnt(text):
+    comment = Comment.query.filter_by(text=text).first()
+
+    if not comment:
+        flash('Cannot find comment.', category='error')
+    elif current_user.username != comment.author:
+        flash('You do not have permission to delete this comment.', 'error')
+    else:
+        db.session.delete(comment)
+        db.session.commit()
+        flash('Comment deleted successfully.', 'success')
+
+    return redirect(url_for('views.viewblogs'))
+
+
 
