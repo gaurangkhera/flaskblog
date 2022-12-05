@@ -26,5 +26,4 @@ class Comment(db.Model):
 
 class Like(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    author = db.Column(db.String(128), db.ForeignKey('user.username'), nullable=False)
     blog_id = db.Column(db.Integer, db.ForeignKey('blog.id'), nullable=False)
