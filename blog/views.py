@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from .models import Blog, Comment
+from .models import Blog, Comment, Like
 from . import db
 
 
@@ -92,7 +92,7 @@ def comment(title):
 
     return redirect(url_for('views.viewblogs'))
 
-@views.route('/blogs/deletecmnt/<text>', methods=['GET', 'POST'])
+@views.route('/blogs/deletecmnt/<text>')
 def delete_cmnt(text):
     comment = Comment.query.filter_by(text=text).first()
 
@@ -105,6 +105,20 @@ def delete_cmnt(text):
         db.session.commit()
         flash('Comment deleted successfully.', 'success')
 
+    return redirect(url_for('views.viewblogs'))
+
+@views.route('/blogs/likeblog/<title>')
+@login_required
+def like(title):
+    blog = Blog.query.filter_by(title=title).first()
+
+    if not blog:
+        flash('Blog not found.', 'error')
+    else:
+        like = Like(blog_id=blog.id)
+        db.session.add(like)
+        db.session.commit()
+        flash(f"Thank you for liking {blog.author}'s post.", 'success')
     return redirect(url_for('views.viewblogs'))
 
 

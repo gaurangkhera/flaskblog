@@ -16,9 +16,15 @@ class Blog(db.Model):
     content = db.Column(db.String(1024), nullable=False)
     author = db.Column(db.String(128), db.ForeignKey('user.username'), nullable=False)
     cmnts = db.relationship('Comment', backref='blogpost', passive_deletes=True)
+    likes = db.relationship('Like', backref='blogpost', passive_deletes=True)
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(128), nullable=False)
     author = db.Column(db.String(128), db.ForeignKey('user.username'), nullable=False)
     blog = db.Column(db.Integer, db.ForeignKey('blog.id'), nullable=False)
+
+class Like(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.String(128), db.ForeignKey('user.username'), nullable=False)
+    blog_id = db.Column(db.Integer, db.ForeignKey('blog.id'), nullable=False)
